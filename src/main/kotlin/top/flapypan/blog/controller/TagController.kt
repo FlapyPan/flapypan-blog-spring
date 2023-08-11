@@ -6,8 +6,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.TagService
-import top.flapypan.blog.vo.TagAddRequest
-import top.flapypan.blog.vo.TagUpdateRequest
+import top.flapypan.blog.vo.TagSaveRequest
 
 /**
  * 标签相关接口
@@ -35,13 +34,15 @@ class TagController(
      * 添加标签
      */
     @PostMapping
-    fun add(@RequestBody @Validated addRequest: TagAddRequest) = tagService.add(addRequest).restOk()
+    fun add(@RequestBody @Validated addRequest: TagSaveRequest) =
+        tagService.add(addRequest).restOk()
 
     /**
      * 修改标签
      */
     @PutMapping
-    fun update(@RequestBody @Validated updateRequest: TagUpdateRequest) = tagService.update(updateRequest).restOk()
+    fun update(@RequestBody @Validated updateRequest: TagSaveRequest) =
+        tagService.update(updateRequest).restOk()
 
     /**
      * 删除标签

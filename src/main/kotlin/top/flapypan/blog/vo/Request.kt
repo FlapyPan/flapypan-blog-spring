@@ -2,17 +2,67 @@ package top.flapypan.blog.vo
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
-import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
-import org.springframework.util.StringUtils
+import org.springframework.beans.BeanUtils
 import top.flapypan.blog.entity.Article
 import top.flapypan.blog.entity.Tag
 
+/**
+ * 保存实体的请求
+ */
+abstract class SaveRequest<Entity : Any> {
+
+    companion object {
+        private val DEFAULT_COPY_IGNORE_PROPERTIES = emptyArray<String>()
+    }
+
+    /**
+     * 获取属性复制忽略列表，覆盖此方法即可自定义忽略列表
+     */
+    protected open fun getIgnoreProperties() = DEFAULT_COPY_IGNORE_PROPERTIES
+
+    /**
+     * 复制属性
+     */
+    protected open fun copyPropertiesTo(entity: Entity) {
+        // 使用 Spring 自带的复制工具
+        BeanUtils.copyProperties(this, entity, *getIgnoreProperties())
+    }
+
+    /**
+     * 获取新实体，由继承者提供具体实现
+     */
+    protected abstract fun newEntity(): Entity
+
+    /**
+     * 构建新的实体，创建之后执行[after]
+     */
+    fun createEntity(after: (Entity.() -> Unit)? = null): Entity {
+        // 构建新实体
+        val entity = newEntity()
+        // 复制属性，并执行后续方法
+        return copyToEntity(entity, after)
+    }
+
+    /**
+     * 复制值到已有的[entity]，复制之后执行[after]
+     */
+    fun copyToEntity(entity: Entity, after: (Entity.() -> Unit)? = null): Entity {
+        // 复制属性
+        copyPropertiesTo(entity)
+        // 执行后续方法
+        after?.let { entity.it() }
+        return entity
+    }
+
+}
+
 
 /**
- * 添加文章的请求
+ * 保存文章的请求
  */
-data class ArticleAddRequest(
+data class ArticleSaveRequest(
+    val id: Long = 0L,
 
     @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
     val title: String,
@@ -28,104 +78,31 @@ data class ArticleAddRequest(
 
     val tagNames: List<String> = mutableListOf()
 
-) {
-
-    /**
-     * 创建新的实体类
-     */
-    inline fun createEntity(after: (Article.() -> Unit) = {}) = Article().also {
-        it.title = title
-        // 没有指定路径则使用标题
-        it.path = if (StringUtils.hasText(path)) path else title
-        it.cover = cover
-        it.content = content
-        it.after()
+) : SaveRequest<Article>() {
+    companion object {
+        private val ignoreProperties = arrayOf("tagNames")
     }
 
+    override fun getIgnoreProperties() = ignoreProperties
+
+    override fun newEntity() = Article()
 }
 
-/**
- * 更新文章的请求
- */
-data class ArticleUpdateRequest(
-
-    @field:Positive
-    val id: Long,
-
-    @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
-    val title: String,
-
-    @field:Size(min = 3, max = 64, message = "路径长度应在3-64之间")
-    @field:Pattern(
-        regexp = "^[a-z0-9:@._-]+$",
-        message = "路径只允许小写字母,数字,冒号,@,英文点,下划线,分隔符"
-    )
-    val path: String,
-
-    val cover: String = "",
-
-    @field:NotBlank(message = "文章内容不能为空")
-    val content: String,
-
-    val tagNames: List<String> = mutableListOf()
-
-) {
-
-    /**
-     * 复制属性值到已有实体
-     */
-    inline fun copyToEntity(entity: Article, after: (Article.() -> Unit) = {}) {
-        if (title.isNotBlank()) {
-            entity.title = title
-        }
-        if (path.isNotBlank()) {
-            entity.path = path
-        }
-        if (cover.isNotBlank()) {
-            entity.cover = cover
-        }
-        if (content.isNotBlank()) {
-            entity.content = content
-        }
-        entity.after()
-    }
-}
 
 /**
- * 标签添加请求
+ * 标签保存请求
  */
-data class TagAddRequest(
-    @Size(min = 2, max = 16, message = "标签名称应在2-16之间")
-    val name: String
-) {
-    /**
-     * 创建新的实体类
-     */
-    fun createEntity() = Tag().also {
-        it.name = name
-    }
-
-}
-
-/**
- * 标签更新请求
- */
-data class TagUpdateRequest(
-
-    @field:Positive(message = "无效的id")
-    val id: Long,
+data class TagSaveRequest(
+    val id: Long = 0L,
 
     @field:Size(min = 2, max = 16, message = "标签名称应在2-16之间")
     val name: String
-
-) {
-    /**
-     * 复制属性值到已有实体类
-     */
-    fun copyToEntity(entity: Tag) {
-        if (name.isNotBlank()) {
-            entity.name = name
-        }
+) : SaveRequest<Tag>() {
+    companion object {
+        private val ignoreProperties = arrayOf("tagNames")
     }
 
+    override fun getIgnoreProperties() = ignoreProperties
+
+    override fun newEntity() = Tag()
 }

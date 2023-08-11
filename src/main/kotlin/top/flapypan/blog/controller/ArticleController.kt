@@ -7,9 +7,8 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.ArticleService
-import top.flapypan.blog.vo.ArticleAddRequest
+import top.flapypan.blog.vo.ArticleSaveRequest
 import top.flapypan.blog.vo.ArticleInfo
-import top.flapypan.blog.vo.ArticleUpdateRequest
 
 /**
  * 文章相关接口
@@ -47,15 +46,15 @@ class ArticleController(
      * 添加文章
      */
     @PostMapping
-    fun add(@RequestBody @Validated articleAddRequest: ArticleAddRequest) =
-        articleService.add(articleAddRequest).restOk()
+    fun add(@RequestBody @Validated articleSaveRequest: ArticleSaveRequest) =
+        articleService.add(articleSaveRequest).restOk()
 
     /**
      * 修改文章
      */
     @PutMapping
-    fun update(@RequestBody @Validated articleUpdateRequest: ArticleUpdateRequest) =
-        articleService.update(articleUpdateRequest).restOk()
+    fun update(@RequestBody @Validated articleSaveRequest: ArticleSaveRequest) =
+        articleService.update(articleSaveRequest).restOk()
 
     /**
      * 删除文章

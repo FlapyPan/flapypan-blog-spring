@@ -11,8 +11,7 @@ import top.flapypan.blog.entity.Tag
 import top.flapypan.blog.repository.ArticleRepository
 import top.flapypan.blog.repository.TagRepository
 import top.flapypan.blog.vo.ArticleInfo
-import top.flapypan.blog.vo.TagAddRequest
-import top.flapypan.blog.vo.TagUpdateRequest
+import top.flapypan.blog.vo.TagSaveRequest
 
 /**
  * 标签相关服务
@@ -38,11 +37,13 @@ class TagService(
      * 添加标签
      */
     @Transactional
-    fun add(addRequest: TagAddRequest): String {
-        val tag = addRequest.createEntity()
-        if (repository.existsByNameIgnoreCase(addRequest.name)) {
+    fun add(request: TagSaveRequest): String {
+        if (repository.existsByNameIgnoreCase(request.name)) {
             throw RestException(HttpStatus.BAD_REQUEST.value(), "标签已经存在")
         }
+        // 构建新实体
+        val tag = request.createEntity()
+        // 保存
         return repository.save(tag).name
     }
 
@@ -50,10 +51,12 @@ class TagService(
      * 修改标签
      */
     @Transactional
-    fun update(updateRequest: TagUpdateRequest): String {
-        val tag = repository.findByIdOrNull(updateRequest.id)
+    fun update(request: TagSaveRequest): String {
+        val tag = repository.findByIdOrNull(request.id)
             ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的标签")
-        updateRequest.copyToEntity(tag)
+        // 复制属性到已有实体
+        request.copyToEntity(tag)
+        // 保存
         return repository.save(tag).name
     }
 

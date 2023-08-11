@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.Transactional
 import top.flapypan.blog.common.RestException
 import top.flapypan.blog.repository.ArticleRepository
 import top.flapypan.blog.repository.TagRepository
-import top.flapypan.blog.vo.ArticleAddRequest
 import top.flapypan.blog.vo.ArticleGroupByYear
-import top.flapypan.blog.vo.ArticleUpdateRequest
+import top.flapypan.blog.vo.ArticleSaveRequest
 
 /**
  * 文章相关服务
@@ -20,10 +19,6 @@ class ArticleService(
     private val repository: ArticleRepository,
     private val tagRepository: TagRepository
 ) {
-
-    companion object {
-        private val pathRegex = Regex("^[a-z0-9:@._-]+$")
-    }
 
     /**
      * 获取文章分页
@@ -57,25 +52,22 @@ class ArticleService(
      * 添加文章
      */
     @Transactional
-    fun add(addRequest: ArticleAddRequest) =
-        // 转换为实体
-        addRequest.createEntity {
+    fun add(request: ArticleSaveRequest): String {
+        // 构建新实体
+        val article = request.createEntity {
             // 获取 tag
-            tags = tagRepository.findAllByNameIn(addRequest.tagNames)
-        }.let {
-            // 保存
-            repository.save(it).path
+            tags = tagRepository.findAllByNameIn(request.tagNames)
         }
+        // 保存
+        return repository.save(article).path
+    }
+
 
     /**
      * 修改文章
      */
     @Transactional
-    fun update(updateRequest: ArticleUpdateRequest): String {
-        // 检查 path 有效性
-        if (!pathRegex.matches(updateRequest.path)) {
-            throw RestException(HttpStatus.BAD_REQUEST.value(), "path 格式无效")
-        }
+    fun update(updateRequest: ArticleSaveRequest): String {
         // 查找文章
         val article = repository.findByIdOrNull(updateRequest.id)
             ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")

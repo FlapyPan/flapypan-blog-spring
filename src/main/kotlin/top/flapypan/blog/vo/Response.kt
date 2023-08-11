@@ -18,7 +18,7 @@ data class ArticleInfo(
 ) {
 
     /**
-     * 通过实体类构造
+     * 通过实体类[article]构造新的[ArticleInfo]
      */
     constructor(article: Article) : this(
         id = article.id,
@@ -33,11 +33,20 @@ data class ArticleInfo(
 }
 
 /**
- * 通过年份分组的文章列表
+ * 通过年份[year]分组的文章信息列表[list]
  */
 data class ArticleGroupByYear(
+    /**
+     * 年份
+     */
     val year: String,
+    /**
+     * 同一年份的文章信息列表
+     */
     val list: List<ArticleInfo>
 ) {
+    /**
+     * 通过年份[year]和文章列表[list]构建
+     */
     constructor(year: Int, list: List<Article>) : this(year.toString(), list.map(::ArticleInfo))
 }
