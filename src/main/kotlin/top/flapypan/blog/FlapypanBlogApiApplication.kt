@@ -3,6 +3,7 @@ package top.flapypan.blog
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import top.flapypan.blog.config.securityBeans
 
 @SpringBootApplication
 class FlapypanBlogApiApplication
@@ -13,5 +14,9 @@ fun main(args: Array<String>) {
         println(BCryptPasswordEncoder().encode(args[1]))
         return
     }
-    runApplication<FlapypanBlogApiApplication>(*args)
+    // 启动 springboot
+    runApplication<FlapypanBlogApiApplication>(*args) {
+        // 添加 security 相关的 bean
+        addInitializers(securityBeans)
+    }
 }
