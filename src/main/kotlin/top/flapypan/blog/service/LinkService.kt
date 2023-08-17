@@ -21,7 +21,6 @@ class LinkService(
     /**
      * 保存固定链接
      */
-    @Transactional
     fun save(links: List<Link>): List<Link> {
         repository.deleteAll()
         return repository.saveAll(links)
