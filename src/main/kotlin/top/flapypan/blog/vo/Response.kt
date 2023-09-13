@@ -50,3 +50,5 @@ data class ArticleGroupByYear(
      */
     constructor(year: Int, list: List<Article>) : this(year.toString(), list.map(::ArticleInfo))
 }
+
+data class AccessBaseInfo(val all: Long, val today: Long)

@@ -5,10 +5,13 @@ import jakarta.validation.constraints.Positive
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import top.flapypan.blog.common.RestResult
 import top.flapypan.blog.common.restOk
+import top.flapypan.blog.entity.Article
+import top.flapypan.blog.service.AccessService
 import top.flapypan.blog.service.ArticleService
-import top.flapypan.blog.vo.ArticleSaveRequest
 import top.flapypan.blog.vo.ArticleInfo
+import top.flapypan.blog.vo.ArticleSaveRequest
 
 /**
  * 文章相关接口
@@ -16,7 +19,8 @@ import top.flapypan.blog.vo.ArticleInfo
 @RestController
 @RequestMapping("/article")
 class ArticleController(
-    private val articleService: ArticleService
+    private val articleService: ArticleService,
+    private val accessService: AccessService
 ) {
 
     /**
@@ -39,8 +43,11 @@ class ArticleController(
      */
     @Validated
     @GetMapping("/{path}")
-    fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String) =
-        articleService.getByPath(path).restOk()
+    fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String): RestResult<Article?> {
+        val article = articleService.getByPath(path)
+        accessService.access(article)
+        return article.restOk()
+    }
 
     /**
      * 添加文章
