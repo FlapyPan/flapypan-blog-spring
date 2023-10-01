@@ -1,1 +1,1 @@
-rootProject.name = "flapypan-blog-api"
+rootProject.name = "flapypan-blog-spring"
