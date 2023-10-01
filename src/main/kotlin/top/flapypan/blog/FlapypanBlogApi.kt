@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import top.flapypan.blog.config.securityBeans
 
 @SpringBootApplication
-class FlapypanBlogApiApplication
+class FlapypanBlogApi
 
 fun main(args: Array<String>) {
     // 启动参数为 hash <pwd> 时生成输出加密过的密码
@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
         return
     }
     // 启动 springboot
-    runApplication<FlapypanBlogApiApplication>(*args) {
+    runApplication<FlapypanBlogApi>(*args) {
         // 添加 security 相关的 bean
         addInitializers(securityBeans)
     }
