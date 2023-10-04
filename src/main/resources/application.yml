@@ -35,3 +35,8 @@ spring:
     resources:
       # 自带的静态资源处理器读取文件的位置
       static-locations: file:${blog.upload-path}
+      # 缓存头配置
+      cache:
+        cachecontrol:
+          cache-public: true
+          max-age: 31536000
