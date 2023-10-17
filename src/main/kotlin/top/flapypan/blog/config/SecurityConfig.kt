@@ -54,7 +54,7 @@ val securityBeans = beans {
             csrf { disable() }
             // 使用 form 登录
             formLogin {
-                loginProcessingUrl = "/auth/login"
+                loginProcessingUrl = "/api/auth/login"
                 authenticationSuccessHandler =
                     AuthenticationSuccessHandler { _, response, _ ->
                         writeResponse(response, "登录成功".restOk())
@@ -68,7 +68,7 @@ val securityBeans = beans {
                 tokenValiditySeconds = 3600 * 24 * 7 // 7 天
             }
             logout {
-                logoutUrl = "/auth/logout"
+                logoutUrl = "/api/auth/logout"
                 logoutSuccessHandler = LogoutSuccessHandler { _, response, _ ->
                     writeResponse(response, "退出登录".restOk())
                 }
@@ -80,7 +80,7 @@ val securityBeans = beans {
                 authorize(HttpMethod.GET, "/**", permitAll)
                 // 忽略图片访问、登录接口
                 authorize("/static/**", permitAll)
-                authorize("/auth/**", permitAll)
+                authorize("/api/auth/**", permitAll)
                 // 其他请求需要登录
                 authorize(anyRequest, authenticated)
             }
