@@ -8,7 +8,7 @@ import top.flapypan.blog.service.SettingService
  * 设置相关接口
  */
 @RestController
-@RequestMapping("/setting")
+@RequestMapping("/api/setting")
 class SettingController(
     private val settingService: SettingService
 ) {

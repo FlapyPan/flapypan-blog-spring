@@ -17,7 +17,7 @@ import top.flapypan.blog.vo.ArticleSaveRequest
  * 文章相关接口
  */
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/api/article")
 class ArticleController(
     private val articleService: ArticleService,
     private val accessService: AccessService

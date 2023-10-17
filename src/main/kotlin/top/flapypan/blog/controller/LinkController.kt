@@ -9,7 +9,7 @@ import top.flapypan.blog.service.LinkService
  * 固定链接相关接口
  */
 @RestController
-@RequestMapping("/link")
+@RequestMapping("/api/link")
 class LinkController(
     private val linkService: LinkService
 ) {

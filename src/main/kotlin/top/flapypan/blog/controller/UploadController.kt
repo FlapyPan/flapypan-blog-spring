@@ -15,7 +15,7 @@ import top.flapypan.blog.service.UploadService
  * 上传相关接口
  */
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/api/upload")
 class UploadController(
     private val uploadService: UploadService
 ) {

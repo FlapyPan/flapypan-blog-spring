@@ -12,7 +12,7 @@ import top.flapypan.blog.vo.TagSaveRequest
  * 标签相关接口
  */
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/api/tag")
 class TagController(
     private val tagService: TagService
 ) {

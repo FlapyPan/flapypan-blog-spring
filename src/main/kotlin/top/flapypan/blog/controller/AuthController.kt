@@ -10,7 +10,7 @@ import top.flapypan.blog.common.restOk
  * 认证相关接口
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 class AuthController {
 
     /**

@@ -12,7 +12,7 @@ import top.flapypan.blog.service.AccessService
  * 访问量相关接口
  */
 @RestController
-@RequestMapping("/access")
+@RequestMapping("/api/access")
 class AccessController(
     private val accessService: AccessService
 ) {
