@@ -63,8 +63,6 @@ class SettingService(
     fun saveSettingsMap(settingsMap: Map<String, String?>) {
         // 获取所有设置
         val settingsWillSaved = repository.findAll()
-            // 过滤掉无需存储的t和值相等的
-            .filter { it.key in settingsMap && settingsMap[it.key] != it.value }
             // 设置新值
             .onEach { it.value = settingsMap[it.key] }
         repository.saveAllAndFlush(settingsWillSaved)
