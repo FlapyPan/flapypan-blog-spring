@@ -61,10 +61,7 @@ class SettingService(
      */
     @Transactional
     fun saveSettingsMap(settingsMap: Map<String, String?>) {
-        // 获取所有设置
-        val settingsWillSaved = repository.findAll()
-            // 设置新值
-            .onEach { it.value = settingsMap[it.key] }
+        val settingsWillSaved = settingsMap.map { (k, v) -> Setting(k, v) }
         repository.saveAllAndFlush(settingsWillSaved)
     }
 
