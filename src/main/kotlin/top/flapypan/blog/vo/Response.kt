@@ -5,6 +5,38 @@ import top.flapypan.blog.entity.Tag
 import java.time.LocalDateTime
 
 /**
+ * 带上一篇和下一篇的文章信息
+ */
+class ArticleWithPreAndNext(
+    val id: Long,
+    val title: String,
+    val path: String,
+    val cover: String?,
+    val content: String,
+    val tags: List<Tag>,
+    val createDate: LocalDateTime,
+    val updateDate: LocalDateTime,
+    val pre: String?,
+    val next: String?,
+) {
+
+    /**
+     * 通过实体类[article]构造新的[ArticleWithPreAndNext]
+     */
+    constructor(article: Article, pre: String?, next: String?) : this(
+        id = article.id,
+        title = article.title,
+        path = article.path,
+        cover = article.cover,
+        content = article.content,
+        tags = article.tags,
+        createDate = article.createDate,
+        updateDate = article.updateDate,
+        pre, next
+    )
+}
+
+/**
  * 文章信息，无文章内容
  */
 data class ArticleInfo(

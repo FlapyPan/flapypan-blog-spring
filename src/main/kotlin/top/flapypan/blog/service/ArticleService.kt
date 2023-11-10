@@ -49,6 +49,16 @@ class ArticleService(
         repository.findFirstByPath(path) ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")
 
     /**
+     * 获取上一篇文章路径
+     */
+    fun getPre(id: Long) = repository.findPrePathById(id)
+
+    /**
+     * 获取下一篇文章路径
+     */
+    fun getNext(id: Long) = repository.findNextPathById(id)
+
+    /**
      * 添加文章
      */
     @Transactional

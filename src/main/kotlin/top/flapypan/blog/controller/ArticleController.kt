@@ -7,11 +7,11 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.RestResult
 import top.flapypan.blog.common.restOk
-import top.flapypan.blog.entity.Article
 import top.flapypan.blog.service.AccessService
 import top.flapypan.blog.service.ArticleService
 import top.flapypan.blog.vo.ArticleInfo
 import top.flapypan.blog.vo.ArticleSaveRequest
+import top.flapypan.blog.vo.ArticleWithPreAndNext
 
 /**
  * 文章相关接口
@@ -43,10 +43,12 @@ class ArticleController(
      */
     @Validated
     @GetMapping("/{path}")
-    fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String): RestResult<Article?> {
+    fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String): RestResult<ArticleWithPreAndNext?> {
         val article = articleService.getByPath(path)
         accessService.access(article)
-        return article.restOk()
+        val pre = articleService.getPre(article.id)
+        val next = articleService.getNext(article.id)
+        return ArticleWithPreAndNext(article, pre, next).restOk()
     }
 
     /**

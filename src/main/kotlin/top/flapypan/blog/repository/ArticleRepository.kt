@@ -53,4 +53,25 @@ interface ArticleRepository : JpaRepository<Article, Long> {
      */
     fun countByTagsId(tagId: Long): Long
 
+    @Query(
+        """
+        SELECT a.path
+            FROM Article a
+            WHERE a.id < :id
+            ORDER BY a.id DESC
+            LIMIT 1
+        """
+    )
+    fun findPrePathById(id: Long): String?
+
+    @Query(
+        """
+        SELECT a.path
+            FROM Article a
+            WHERE a.id > :id
+            ORDER BY a.id ASC
+            LIMIT 1
+        """
+    )
+    fun findNextPathById(id: Long): String?
 }
