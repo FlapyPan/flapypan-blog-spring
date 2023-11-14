@@ -1,17 +1,20 @@
 package top.flapypan.blog.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Positive
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.RestResult
 import top.flapypan.blog.common.restOk
+import top.flapypan.blog.config.ClientInfo
 import top.flapypan.blog.service.AccessService
 import top.flapypan.blog.service.ArticleService
+import top.flapypan.blog.vo.ArticleDetailInfo
 import top.flapypan.blog.vo.ArticleInfo
 import top.flapypan.blog.vo.ArticleSaveRequest
-import top.flapypan.blog.vo.ArticleWithPreAndNext
 
 /**
  * 文章相关接口
@@ -43,12 +46,16 @@ class ArticleController(
      */
     @Validated
     @GetMapping("/{path}")
-    fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String): RestResult<ArticleWithPreAndNext?> {
+    fun getByPath(
+        @PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String,
+        @Autowired request: HttpServletRequest,
+    ): RestResult<ArticleDetailInfo?> {
         val article = articleService.getByPath(path)
-        accessService.access(article)
+        accessService.access(article, ClientInfo(request))
         val pre = articleService.getPre(article.id)
         val next = articleService.getNext(article.id)
-        return ArticleWithPreAndNext(article, pre, next).restOk()
+        val accessCount = accessService.countByArticleId(article.id)
+        return ArticleDetailInfo(article, pre, next, accessCount).restOk()
     }
 
     /**

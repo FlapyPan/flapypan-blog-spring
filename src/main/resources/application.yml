@@ -5,10 +5,6 @@ blog:
   upload-path: ${UPLOAD_DIR:upload}
 server:
   port: ${PORT:8080}
-  servlet:
-    session:
-      cookie:
-        same-site: strict # 严格限制cookie为同域
 spring:
   application:
     name: flapypan-blog-api
@@ -40,3 +36,7 @@ spring:
         cachecontrol:
           cache-public: true
           max-age: 31536000
+  jackson:
+    # json 格式化配置
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss

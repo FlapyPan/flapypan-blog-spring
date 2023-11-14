@@ -1,7 +1,8 @@
 package top.flapypan.blog.service
 
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import top.flapypan.blog.config.ClientInfoContext
+import top.flapypan.blog.config.ClientInfo
 import top.flapypan.blog.entity.Access
 import top.flapypan.blog.entity.Article
 import top.flapypan.blog.repository.AccessRepository
@@ -18,8 +19,8 @@ class AccessService(
     /**
      * 添加一条新的访问数据
      */
-    fun access(accessArticle: Article) {
-        val clientInfo = ClientInfoContext.get()
+    @Async
+    fun access(accessArticle: Article, clientInfo: ClientInfo) {
         val access = Access().apply {
             article = accessArticle
             referrer = clientInfo.referrer

@@ -2,10 +2,12 @@ package top.flapypan.blog
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import top.flapypan.blog.config.securityBeans
 
 @SpringBootApplication
+@EnableAsync
 class FlapypanBlogApi
 
 fun main(args: Array<String>) {
