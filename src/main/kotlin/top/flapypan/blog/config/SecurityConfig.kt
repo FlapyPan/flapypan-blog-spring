@@ -52,10 +52,10 @@ val securityBeans = beans {
                 loginProcessingUrl = "/api/auth/login"
                 authenticationSuccessHandler =
                     AuthenticationSuccessHandler { _, response, _ ->
-                        writeResponse(response, HttpStatus.OK, "true")
+                        writeResponse(response, HttpStatus.OK, "welcome")
                     }
-                authenticationFailureHandler = AuthenticationFailureHandler { _, response, _ ->
-                    writeResponse(response, HttpStatus.OK, "false")
+                authenticationFailureHandler = AuthenticationFailureHandler { _, response, e ->
+                    writeResponse(response, HttpStatus.UNAUTHORIZED, e.message)
                 }
             }
             // 记住我
@@ -65,7 +65,7 @@ val securityBeans = beans {
             logout {
                 logoutUrl = "/api/auth/logout"
                 logoutSuccessHandler = LogoutSuccessHandler { _, response, _ ->
-                    writeResponse(response, HttpStatus.OK, "true")
+                    writeResponse(response, HttpStatus.OK, "bye")
                 }
             }
             // 关闭匿名功能
@@ -93,11 +93,11 @@ val securityBeans = beans {
     }
 }
 
-private fun writeResponse(response: HttpServletResponse, httpStatus: HttpStatus, result: String) =
+private fun writeResponse(response: HttpServletResponse, httpStatus: HttpStatus, result: String?) =
     with(response) {
         // 设置 http 状态码
         status = httpStatus.value()
         // 设置 utf8 编码
         characterEncoding = StandardCharsets.UTF_8.name()
-        writer.write(result)
+        writer.write(result ?: "")
     }
