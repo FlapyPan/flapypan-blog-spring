@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 import top.flapypan.blog.entity.Article
 
 @Repository
-interface ArticleRepository : JpaRepository<Article, Long> {
+interface ArticleRepository : JpaRepository<Article, Int> {
 
     /**
      * 通过路径获取文章
@@ -51,7 +51,7 @@ interface ArticleRepository : JpaRepository<Article, Long> {
     /**
      * 通过标签名获取文章数量
      */
-    fun countByTagsId(tagId: Long): Long
+    fun countByTagsId(tagId: Int): Int
 
     @Query(
         """
@@ -62,7 +62,7 @@ interface ArticleRepository : JpaRepository<Article, Long> {
             LIMIT 1
         """
     )
-    fun findPrePathById(id: Long): String?
+    fun findPrePathById(id: Int): String?
 
     @Query(
         """
@@ -73,5 +73,5 @@ interface ArticleRepository : JpaRepository<Article, Long> {
             LIMIT 1
         """
     )
-    fun findNextPathById(id: Long): String?
+    fun findNextPathById(id: Int): String?
 }

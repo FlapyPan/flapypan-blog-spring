@@ -64,7 +64,7 @@ class TagService(
      * 删除标签
      */
     @Transactional
-    fun delete(id: Long) {
+    fun delete(id: Int) {
         if (articleRepository.countByTagsId(id) > 0) {
             throw RestException(HttpStatus.BAD_REQUEST.value(), "当前标签下存在文章")
         }

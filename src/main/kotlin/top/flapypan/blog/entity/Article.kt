@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 open class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
+    var id: Int = 0
 
     @Column(nullable = false, unique = true)
     var title: String = ""

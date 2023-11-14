@@ -10,7 +10,7 @@ import jakarta.persistence.*
 class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
+    var id: Int = 0
 
     @Column(nullable = false)
     var name: String = ""

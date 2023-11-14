@@ -62,7 +62,7 @@ abstract class SaveRequest<Entity : Any> {
  * 保存文章的请求
  */
 data class ArticleSaveRequest(
-    val id: Long = 0L,
+    val id: Int = 0,
 
     @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
     val title: String,
@@ -93,7 +93,7 @@ data class ArticleSaveRequest(
  * 标签保存请求
  */
 data class TagSaveRequest(
-    val id: Long = 0L,
+    val id: Int = 0,
 
     @field:Size(min = 2, max = 16, message = "标签名称应在2-16之间")
     val name: String

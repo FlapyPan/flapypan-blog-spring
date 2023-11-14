@@ -70,6 +70,6 @@ class ArticleController(
      */
     @Validated
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: @Positive Long) =
+    fun delete(@PathVariable id: @Positive Int) =
         articleService.delete(id).restOk()
 }

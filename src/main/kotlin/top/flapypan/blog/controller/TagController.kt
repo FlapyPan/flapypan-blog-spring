@@ -49,7 +49,7 @@ class TagController(
      */
     @Validated
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable @Positive id: Long) = tagService.delete(id).restOk()
+    fun delete(@PathVariable @Positive id: Int) = tagService.delete(id).restOk()
 
     /**
      * 获取标签下的文章列表

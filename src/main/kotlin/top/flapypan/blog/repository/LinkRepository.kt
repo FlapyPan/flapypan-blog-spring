@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository
 import top.flapypan.blog.entity.Link
 
 @Repository
-interface LinkRepository : JpaRepository<Link, Long>
+interface LinkRepository : JpaRepository<Link, Int>

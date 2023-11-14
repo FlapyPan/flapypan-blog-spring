@@ -27,5 +27,5 @@ class AccessController(
      * 获取指定文章的访问量
      */
     @GetMapping("/article/{id}")
-    fun getByArticleId(@PathVariable id: @Positive Long) = accessService.countByArticleId(id).restOk()
+    fun getByArticleId(@PathVariable id: @Positive Int) = accessService.countByArticleId(id).restOk()
 }

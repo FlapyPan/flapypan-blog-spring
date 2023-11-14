@@ -6,9 +6,9 @@ import top.flapypan.blog.entity.Access
 import java.time.LocalDateTime
 
 @Repository
-interface AccessRepository : JpaRepository<Access, Long> {
+interface AccessRepository : JpaRepository<Access, Int> {
     fun countByCreateDateBetween(createDateStart: LocalDateTime, createDateEnd: LocalDateTime): Long
 
-    fun countByArticleId(id: Long): Long
+    fun countByArticleId(id: Int): Long
 
 }

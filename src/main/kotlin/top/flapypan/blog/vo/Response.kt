@@ -8,7 +8,7 @@ import java.time.LocalDateTime
  * 带上一篇和下一篇的文章信息
  */
 class ArticleWithPreAndNext(
-    val id: Long,
+    val id: Int,
     val title: String,
     val path: String,
     val cover: String?,
@@ -40,7 +40,7 @@ class ArticleWithPreAndNext(
  * 文章信息，无文章内容
  */
 data class ArticleInfo(
-    val id: Long,
+    val id: Int,
     val title: String,
     val path: String,
     val cover: String?,

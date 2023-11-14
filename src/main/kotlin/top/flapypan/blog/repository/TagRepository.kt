@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository
 import top.flapypan.blog.entity.Tag
 
 @Repository
-interface TagRepository : JpaRepository<Tag, Long> {
+interface TagRepository : JpaRepository<Tag, Int> {
 
     /**
      * 查询名称是否存在

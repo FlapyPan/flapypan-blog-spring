@@ -42,5 +42,5 @@ class AccessService(
         return AccessBaseInfo(all, today)
     }
 
-    fun countByArticleId(id: Long) = repository.countByArticleId(id)
+    fun countByArticleId(id: Int) = repository.countByArticleId(id)
 }

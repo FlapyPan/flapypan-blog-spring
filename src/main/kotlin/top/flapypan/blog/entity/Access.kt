@@ -10,7 +10,7 @@ class Access {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
+    var id: Int = 0
 
     @ManyToOne
     @JoinColumn(name = "article_id")

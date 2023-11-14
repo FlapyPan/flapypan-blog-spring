@@ -51,12 +51,12 @@ class ArticleService(
     /**
      * 获取上一篇文章路径
      */
-    fun getPre(id: Long) = repository.findPrePathById(id)
+    fun getPre(id: Int) = repository.findPrePathById(id)
 
     /**
      * 获取下一篇文章路径
      */
-    fun getNext(id: Long) = repository.findNextPathById(id)
+    fun getNext(id: Int) = repository.findNextPathById(id)
 
     /**
      * 添加文章
@@ -93,6 +93,6 @@ class ArticleService(
      * 删除文章
      */
     @Transactional
-    fun delete(id: Long) = repository.deleteById(id)
+    fun delete(id: Int) = repository.deleteById(id)
 
 }
