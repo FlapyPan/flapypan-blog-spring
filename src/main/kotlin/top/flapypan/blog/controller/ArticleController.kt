@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.RestResult
-import top.flapypan.blog.common.restOk
 import top.flapypan.blog.config.ClientInfo
 import top.flapypan.blog.service.AccessService
 import top.flapypan.blog.service.ArticleService
@@ -33,13 +31,13 @@ class ArticleController(
     fun getPage(keyword: String?, pageable: Pageable) =
         (keyword?.takeIf(String::isNotBlank)?.let {
             articleService.searchByKeyword(it, pageable)
-        } ?: articleService.getPage(pageable)).map(::ArticleInfo).restOk()
+        } ?: articleService.getPage(pageable)).map(::ArticleInfo)
 
     /**
      * 获取所有文章信息，并根据年份分组
      */
     @GetMapping("/group-by/year")
-    fun getGroupByYear() = articleService.groupByYear().restOk()
+    fun getGroupByYear() = articleService.groupByYear()
 
     /**
      * 通过路径获取文章内容
@@ -49,13 +47,13 @@ class ArticleController(
     fun getByPath(
         @PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String,
         @Autowired request: HttpServletRequest,
-    ): RestResult<ArticleDetailInfo?> {
+    ): ArticleDetailInfo? {
         val article = articleService.getByPath(path)
         accessService.access(article, ClientInfo(request))
         val pre = articleService.getPre(article.id)
         val next = articleService.getNext(article.id)
         val accessCount = accessService.countByArticleId(article.id)
-        return ArticleDetailInfo(article, pre, next, accessCount).restOk()
+        return ArticleDetailInfo(article, pre, next, accessCount)
     }
 
     /**
@@ -63,14 +61,14 @@ class ArticleController(
      */
     @PostMapping
     fun add(@RequestBody @Validated articleSaveRequest: ArticleSaveRequest) =
-        articleService.add(articleSaveRequest).restOk()
+        articleService.add(articleSaveRequest)
 
     /**
      * 修改文章
      */
     @PutMapping
     fun update(@RequestBody @Validated articleSaveRequest: ArticleSaveRequest) =
-        articleService.update(articleSaveRequest).restOk()
+        articleService.update(articleSaveRequest)
 
     /**
      * 删除文章
@@ -78,5 +76,5 @@ class ArticleController(
     @Validated
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: @Positive Int) =
-        articleService.delete(id).restOk()
+        articleService.delete(id)
 }

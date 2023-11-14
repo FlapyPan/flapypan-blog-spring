@@ -1,12 +1,10 @@
 package top.flapypan.blog.config
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.support.beans
 import org.springframework.core.env.get
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.core.userdetails.User
@@ -20,9 +18,6 @@ import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
-import top.flapypan.blog.common.RestResult
-import top.flapypan.blog.common.restErr
-import top.flapypan.blog.common.restOk
 import java.nio.charset.StandardCharsets
 
 /**
@@ -57,10 +52,10 @@ val securityBeans = beans {
                 loginProcessingUrl = "/api/auth/login"
                 authenticationSuccessHandler =
                     AuthenticationSuccessHandler { _, response, _ ->
-                        writeResponse(response, "登录成功".restOk())
+                        writeResponse(response, HttpStatus.OK, "true")
                     }
                 authenticationFailureHandler = AuthenticationFailureHandler { _, response, _ ->
-                    writeResponse(response, "登陆失败".restErr(HttpStatus.UNAUTHORIZED.value()))
+                    writeResponse(response, HttpStatus.OK, "false")
                 }
             }
             // 记住我
@@ -70,7 +65,7 @@ val securityBeans = beans {
             logout {
                 logoutUrl = "/api/auth/logout"
                 logoutSuccessHandler = LogoutSuccessHandler { _, response, _ ->
-                    writeResponse(response, "退出登录".restOk())
+                    writeResponse(response, HttpStatus.OK, "true")
                 }
             }
             // 关闭匿名功能
@@ -87,24 +82,22 @@ val securityBeans = beans {
             // 错误处理
             exceptionHandling {
                 authenticationEntryPoint = AuthenticationEntryPoint { _, response, _ ->
-                    writeResponse(response, "请登录".restErr(HttpStatus.UNAUTHORIZED.value()))
+                    writeResponse(response, HttpStatus.UNAUTHORIZED, "请登录")
                 }
                 accessDeniedHandler = AccessDeniedHandler { _, response, _ ->
-                    writeResponse(response, "请登录".restErr(HttpStatus.UNAUTHORIZED.value()))
+                    writeResponse(response, HttpStatus.UNAUTHORIZED, "请登录")
                 }
             }
         }
         http.build()
     }
-
 }
 
-private fun writeResponse(response: HttpServletResponse, result: RestResult<String?>) = with(response) {
-    // 设置 http 状态码
-    status = HttpStatus.OK.value()
-    // 设置 utf8 编码
-    characterEncoding = StandardCharsets.UTF_8.name()
-    // 类型 json
-    contentType = MediaType.APPLICATION_JSON_VALUE
-    writer.write(ObjectMapper().writeValueAsString(result))
-}
+private fun writeResponse(response: HttpServletResponse, httpStatus: HttpStatus, result: String) =
+    with(response) {
+        // 设置 http 状态码
+        status = httpStatus.value()
+        // 设置 utf8 编码
+        characterEncoding = StandardCharsets.UTF_8.name()
+        writer.write(result)
+    }

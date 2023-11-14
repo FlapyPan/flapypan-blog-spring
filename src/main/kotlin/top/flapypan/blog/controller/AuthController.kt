@@ -4,7 +4,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import top.flapypan.blog.common.restOk
 
 /**
  * 认证相关接口
@@ -18,6 +17,6 @@ class AuthController {
      */
     @GetMapping
     fun check() =
-        (SecurityContextHolder.getContext().authentication?.isAuthenticated ?: false).restOk()
+        (SecurityContextHolder.getContext().authentication?.isAuthenticated ?: false)
 
 }

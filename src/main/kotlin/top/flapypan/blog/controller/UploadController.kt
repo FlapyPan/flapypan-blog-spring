@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import top.flapypan.blog.common.RestException
-import top.flapypan.blog.common.RestResult
-import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.UploadService
 
 /**
@@ -24,11 +22,11 @@ class UploadController(
      * 上传图片
      */
     @PostMapping
-    fun add(@RequestParam("file") multipartFile: MultipartFile): RestResult<String?> {
+    fun add(@RequestParam("file") multipartFile: MultipartFile): String? {
         // 限制为图片
         if (multipartFile.contentType?.startsWith("image/") != true) {
             throw RestException(HttpStatus.BAD_REQUEST.value(), "错误的文件类型")
         }
-        return uploadService.upload(multipartFile).restOk()
+        return uploadService.upload(multipartFile)
     }
 }

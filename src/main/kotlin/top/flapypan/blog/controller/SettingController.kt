@@ -1,7 +1,6 @@
 package top.flapypan.blog.controller
 
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.SettingService
 
 /**
@@ -17,12 +16,12 @@ class SettingController(
      * 获取所有设置
      */
     @GetMapping
-    fun getSettings() = settingService.getSettingsMap().restOk()
+    fun getSettings() = settingService.getSettingsMap()
 
     /**
      * 保存设置
      */
     @PostMapping
     fun updateSettings(@RequestBody settingsMap: Map<String, String?>) =
-        settingService.saveSettingsMap(settingsMap).restOk()
+        settingService.saveSettingsMap(settingsMap)
 }

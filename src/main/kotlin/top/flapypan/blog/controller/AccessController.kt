@@ -3,7 +3,6 @@ package top.flapypan.blog.controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.AccessService
 
 /**
@@ -19,5 +18,5 @@ class AccessController(
      * 获取基本访问量信息
      */
     @GetMapping
-    fun getBaseInfo() = accessService.baseInfo().restOk()
+    fun getBaseInfo() = accessService.baseInfo()
 }
