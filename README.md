@@ -1,10 +1,15 @@
 # FlapyPan Blog
 
+> [!WARNING]
+> 本项目已停止维护，后端功能已合并至 [flapypan-blog](https://github.com/FlapyPan/flapypan-blog)
+
+---
+
 基于 SpringBoot 3 开发一款简单高效的博客系统(后端程序)
 
-**本仓库为后端项目，要配合前端项目使用。请对应版本号，例：前端版本`v1.4.x`则后端也使用`v1.4.x`**
+**本仓库为后端项目，要配合前端项目使用。请对应版本号，例：前端版本`v1.5.x`则后端也使用`v1.5.x`**
 
-前端项目：[flapypan-blog-vue](https://github.com/FlapyPan/flapypan-blog-vue)
+前端项目(v1.5)：[flapypan-blog-vue](https://github.com/FlapyPan/flapypan-blog/tree/v1.5)
 
 ## 功能列表
 
